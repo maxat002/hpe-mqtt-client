@@ -43,10 +43,10 @@ public class PublisherApp2 {
         aClient.connect();
 
         Set<Integer> set = new HashSet<Integer>();        
-        int requestID = getRandomNumberInRange(1,100000);
+        int requestID = utils.getRandomNumberInRange(1,100000);
 //        int requestID = 1000;
         while(set.contains(requestID)){
-        	requestID = getRandomNumberInRange(1,100000);
+        	requestID = utils.getRandomNumberInRange(1,100000);
         }
         set.add(requestID);
         String msg = utils.contructPublishPayloadString();
@@ -192,13 +192,4 @@ public class PublisherApp2 {
 		}
 
     }
-	private static int getRandomNumberInRange(int min, int max) {
-
-		if (min >= max) {
-			throw new IllegalArgumentException("max must be greater than min");
-		}
-
-		Random r = new Random();
-		return r.nextInt((max - min) + 1) + min;
-	}
 }

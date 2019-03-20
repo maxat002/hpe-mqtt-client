@@ -1,6 +1,8 @@
 package com.mqtt.client;
 
 
+import java.util.Arrays;
+
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
@@ -136,7 +138,6 @@ public class MqttClientAsync implements MqttCallback {
     }
 
     // subscribe multiple topics with Qos
-
     public void subscribe(String[] topics, int[] Qos){
         try {
             sampleClient.subscribe(topics, Qos);
@@ -148,19 +149,36 @@ public class MqttClientAsync implements MqttCallback {
     }
 
     // subscribe a topic with qos
-
     public void subscribe(String topic, int qos){
         try {
             sampleClient.subscribe(topic, qos);
             System.out.println("Subscribed");
         } catch (Exception e){
             System.out.println("sub error: " +e);
-        }
-        
+        }        
+    }
+    // subscribe a topic with qos
+    public void subscribe2(String topic, int qos){
+        try {
+            sampleClient.subscribe(topic, qos);
+            System.out.println("Subscribed");
+            
+//            sampleClient.subscribe(topic, (topicItem, msg) -> {
+//            	System.out.println("----8");
+//                byte[] payload = msg.getPayload();
+//                LOGGER.debug("[I82] Message received: topic={}, payload={}", topicItem, new String(payload));
+//                String[] recievedValuesAsSrings = new String(payload).split("/");
+//                System.out.println("---------RECEIVED START ---------");
+//                System.out.println(Arrays.toString(recievedValuesAsSrings));
+//                System.out.println("--------RECEIVED END----------");
+//            });
+            
+        } catch (Exception e){
+            System.out.println("sub error: " +e);
+        }        
     }
 
     // disconnect from a broker
-
     public void disconnect(){
         try {
             sampleClient.disconnect();

@@ -3,6 +3,7 @@ package com.mqtt.client;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.Random;
 
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.json.JSONObject;
@@ -42,4 +43,13 @@ public class Utils {
 	  	jsonObject.put("params", state); 
 	    return jsonObject.toString();
     }
+    public int getRandomNumberInRange(int min, int max) {
+
+		if (min >= max) {
+			throw new IllegalArgumentException("max must be greater than min");
+		}
+
+		Random r = new Random();
+		return r.nextInt((max - min) + 1) + min;
+	}
 }
