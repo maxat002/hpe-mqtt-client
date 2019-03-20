@@ -65,7 +65,7 @@ public class AirconControlSystemPublisher implements Runnable {
         msg.setQos(0);
         msg.setRetained(true);
         try {
-            client.publish(properties.getProperty("publishing_topic_reqID"), msg);
+            client.publish(properties.getProperty("publishing_topic_reqID") + this.requestID, msg);
             LOGGER.info("On topic {} message: {} sent", properties.getProperty("publishing_topic_reqID") + this.requestID, msg);
 //            subscribeToReqID( properties );
         } catch (MqttException e) {

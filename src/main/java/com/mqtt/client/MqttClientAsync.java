@@ -63,13 +63,14 @@ public class MqttClientAsync implements MqttCallback {
 
 
     // constructor
-     public  MqttClientAsync(String broker, String clientId){
+     public  MqttClientAsync(String broker, String clientId, MqttConnectOptions connOpts){
         // Do initialization here 
         this.broker = broker;
         this.clientId = clientId;
+        this.connOpts = connOpts;
         try {
             persistence = new MemoryPersistence();
-            connOpts = new MqttConnectOptions();
+//            connOpts = new MqttConnectOptions();
             sampleClient = new MqttAsyncClient(broker, clientId, persistence);
 
         } catch (Exception e){
@@ -86,7 +87,7 @@ public class MqttClientAsync implements MqttCallback {
             sampleClient.setCallback(this);
             System.out.println("Connecting to broker: " + broker);
             sampleClient.connect(connOpts);
-            System.out.println("Connected");
+            System.out.println("Connected connect()");
             Thread.sleep(500); // wait until connection is complete
 
         } catch (Exception e){
@@ -95,7 +96,27 @@ public class MqttClientAsync implements MqttCallback {
     }
 
     // publish a message to a topic with a qos
+    public void publish(String topic, MqttMessage message, int qos){
+        try {
+        	if (!sampleClient.isConnected()) {
+        		sampleClient.connect();
+            }
+             IMqttDeliveryToken token = null;
+             MqttMessage Mqttmsg = message;
+             Mqttmsg.setQos(qos);
+             Mqttmsg.setRetained(false);
+             token = sampleClient.publish(topic, Mqttmsg);
+             // Wait until the message has been delivered to the broker
+             token.waitForCompletion();
+             Thread.sleep(100);
+             System.out.println("Message published");
 
+        } catch (Exception e) {
+            System.out.println("pub error :"+ e);
+        }
+    }
+    
+    // publish a message to a topic with a qos
     public void publish(String topic, String message, int qos){
         try {
              
@@ -107,7 +128,7 @@ public class MqttClientAsync implements MqttCallback {
              // Wait until the message has been delivered to the broker
              token.waitForCompletion();
              Thread.sleep(100);
-             System.out.println("Message published");
+             System.out.println("Message published publish2()");
 
         } catch (Exception e) {
             System.out.println("pub error :"+ e);
